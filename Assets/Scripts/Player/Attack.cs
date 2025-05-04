@@ -20,6 +20,8 @@ public class Attack : MonoBehaviour
             Vector3 dir = (mousePos - transform.position).normalized;
             float angle = Mathf.Atan2(dir.y,dir.x) * Mathf.Rad2Deg;
             GameObject newObj = Instantiate(hitbox, transform.position + new Vector3(dir.x*1,dir.y*1), Quaternion.Euler(0, 0, angle));
+            HitboxFollowCharacter followScript = newObj.GetComponent<HitboxFollowCharacter>();
+            followScript.Set(transform,dir);
             StartCoroutine(Despawn(newObj));
         }
     }
