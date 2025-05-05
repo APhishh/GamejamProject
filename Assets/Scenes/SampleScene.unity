@@ -242,8 +242,9 @@ GameObject:
   - component: {fileID: 533554079}
   - component: {fileID: 533554078}
   - component: {fileID: 533554077}
+  - component: {fileID: 533554081}
   m_Layer: 0
-  m_Name: Player (1)
+  m_Name: Enemy
   m_TagString: Hitable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -378,6 +379,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &533554081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533554076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 811d24a6cc297514e98ab57fd175b242, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 708453972}
+  enemyRB: {fileID: 533554078}
+  detected: 0
+  walkspeed: 2
+  hitbox: {fileID: 2525822745882812696, guid: f73550d3dc9a68544b3759771787ec75, type: 3}
+  attCooldown: 1
+  canAttack: 1
 --- !u!1 &708453969
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,7 +702,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.11, y: -0.77, z: 0}
-  m_LocalScale: {x: 11.2174, y: 1, z: 1}
+  m_LocalScale: {x: 55.666348, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

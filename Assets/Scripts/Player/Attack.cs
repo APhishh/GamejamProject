@@ -8,8 +8,6 @@ public class Attack : MonoBehaviour
 
     [SerializeField] GameObject hitbox;
 
-   
-
     // Update is called once per frame
     void Update()
     {
