@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -7,24 +8,29 @@ public class EnemyFollowAI : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private Rigidbody2D enemyRB;
-    [SerializeField] private bool detected;
+    [SerializeField] private string state;
     [SerializeField] private float walkspeed;
     [SerializeField] GameObject hitbox;
     [SerializeField] float attCooldown;
     [SerializeField] private bool canAttack = true;
+    [SerializeField] private String Direction = "Left";
     // Update is called once per frame
     void Update()
     {
-        if (Vector2.Distance(transform.position, player.position) <= 10)
+        if (player == null)
         {
-            detected = true;
+            state = "Wander";
         }
         else
         {
-            detected = false;   
+             if (Vector2.Distance(transform.position, player.position) <= 6)
+            {
+                state = "Detected";
+            }
         }
+       
 
-        if (detected)
+        if (state == "Detected")
         {
             Vector3 dir = (player.position - transform.position).normalized;
             enemyRB.velocity = new Vector2(dir.normalized.x * walkspeed, 0);
@@ -45,6 +51,8 @@ public class EnemyFollowAI : MonoBehaviour
                 float angle = Mathf.Atan2(dir.y,dir.x) * Mathf.Rad2Deg;
                 GameObject attHitbox = Instantiate(hitbox,transform.position ,Quaternion.Euler(0,0,angle));
                 HitboxFollowCharacter followScript = attHitbox.GetComponent<HitboxFollowCharacter>();
+                CollisionDetection colScript = attHitbox.GetComponent<CollisionDetection>();
+                colScript.setAttacker(gameObject);  
                 followScript.Set(transform,dir);
                 StartCoroutine(Despawn(attHitbox));
                 StartCoroutine(AttackCooldown());

@@ -9,7 +9,14 @@ public class HitboxFollowCharacter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = character.position + new Vector3(dir.x*1,dir.y*1);
+        if (character != null)
+        {
+            transform.position = character.position + new Vector3(dir.x*1,dir.y*1);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void Set(Transform charac, Vector2 dir)

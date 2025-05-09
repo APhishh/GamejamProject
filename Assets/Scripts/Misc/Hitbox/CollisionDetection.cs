@@ -1,16 +1,50 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CollisionDetection : MonoBehaviour
 {
+    private AttackHitboxProperties AHP;
+    [SerializeField] private GameObject attacker;
+    [SerializeField] GameObject hitParticle;
+    private float damage;
 
+    void Start()
+    {
+        AHP = gameObject.GetComponent<AttackHitboxProperties>();
+        if (AHP != null)
+        {
+            damage = AHP.getDamage();
+        }
+        else
+        {
+            Debug.Log("Unable to get damage, AHP is NULL");
+        }
+    }
+
+    public void setAttacker(GameObject attacker)
+    {
+        this.attacker = attacker;
+    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Hitable"))
+        if(collision.CompareTag("Hitable") && collision.gameObject != attacker)
         {
-            Debug.Log("NIGGA");
+            Debug.Log(collision);
+            HealthSys targetHealthSys = collision.GetComponent<HealthSys>();
+            targetHealthSys.Damage(damage);
+            Vector2 dir = (collision.transform.position - transform.position).normalized;
+            Debug.Log(dir);
+            float Angle = Mathf.Atan2(dir.y,dir.x) * Mathf.Rad2Deg;
+            Vector3 direction3D = new Vector3(transform.right.x, transform.right.y, 0f);
+            GameObject hitPart = Instantiate(hitParticle, collision.transform.position, Quaternion.LookRotation(direction3D, Vector3.back));
+            Debug.DrawRay(hitPart.transform.position, hitPart.transform.right * 2, Color.red, 1f);
+
+            Destroy(hitPart,1f);
         }
     }
 }
