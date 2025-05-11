@@ -18,7 +18,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] private PlayerStats playerStats;
     [SerializeField] private SpriteRenderer SR;
-
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private bool grounded;
     private bool canJump = true;
     private bool canDash = true;
     private bool isDashing = false; // Flag to indicate if the player is currently dashing
@@ -26,20 +27,30 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // Check if inputs are allowed
-        if (!InputManager.Instance.CanProcessInput("PlayerMovement"))
-        {
-            return; // Skip all input handling if inputs are disabled
-        }
-
+       
         if (!isDashing) // Skip movement and jump logic while dashing
         {
+            HandleFalling();
             HandleMovement();
             HandleJump();
         }
         HandleDash();
     }
 
+    void HandleFalling()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1, groundLayer);
+        if(hit.collider != null)
+        {
+            grounded = true;
+            animator.SetBool("Grounded", true);
+        }
+        else
+        {
+            animator.SetBool("Grounded", false);
+            grounded = false;
+        }
+    }
     void HandleMovement()
     {
         // Get input from both keyboard and controller horizontal axis
@@ -49,7 +60,6 @@ public class PlayerMovement : MonoBehaviour
         velX += Input.GetAxis("LeftJoystickHorizontal") * movementSpeed;
 
         animator.SetFloat("Speed", math.abs(playerRB.velocity.x)); // Disabled for debugging
-
 
 
         // Update sprite direction
@@ -91,7 +101,10 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(Dash());
         }
     }
-
+    public void setSpeed(float newspeed)
+    {
+        movementSpeed = newspeed;
+    }
     IEnumerator Dash()
     {
         canDash = false;

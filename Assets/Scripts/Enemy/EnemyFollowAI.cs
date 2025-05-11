@@ -23,7 +23,6 @@ public class EnemyFollowAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if(Direction == "Left")
         {
             ray = new Ray(transform.position - new Vector3(1,0,0),Vector2.down*5);
@@ -52,16 +51,21 @@ public class EnemyFollowAI : MonoBehaviour
                 Direction = "Left";
             }
         }
-        else
-        {
-             if (Vector2.Distance(transform.position, player.position) <= 6)
+       
+       if(player!=null && player.gameObject.layer != LayerMask.NameToLayer("DeadPlayer"))
+       {
+         if (Vector2.Distance(transform.position, player.position) <= 6)
             {
                 state = "Detected";
             }
-        }
+       }
+       else
+       {
+            state = "Wander";
+       }
        
 
-        if (state == "Detected")
+        if (state == "Detected" && player != null && player.gameObject.layer != LayerMask.NameToLayer("DeadPlayer"))
         {
             Vector3 dir = (player.position - transform.position).normalized;
             enemyRB.velocity = new Vector2(dir.normalized.x * walkspeed, enemyRB.velocity.y);
