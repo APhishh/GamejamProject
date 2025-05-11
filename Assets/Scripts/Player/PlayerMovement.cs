@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private bool canJump = true;
     private bool canDash = true;
     private bool isDashing = false; // Flag to indicate if the player is currently dashing
+    private bool isClimbing = false;
 
     void Update()
     {
@@ -37,11 +38,13 @@ public class PlayerMovement : MonoBehaviour
     {
         // Get input from both keyboard and controller horizontal axis
         float velX = Input.GetAxis("Horizontal") * movementSpeed;
-
+        float velY = Input.GetAxis("Vertical") * movementSpeed;
         // Also support D-pad input
         velX += Input.GetAxis("LeftJoystickHorizontal") * movementSpeed;
 
         animator.SetFloat("Speed", math.abs(playerRB.velocity.x)); // Disabled for debugging
+
+
 
         // Update sprite direction
         if (velX < 0)
@@ -53,13 +56,22 @@ public class PlayerMovement : MonoBehaviour
             SR.flipX = false;
         }
 
-        playerRB.velocity = new Vector2(velX, playerRB.velocity.y);
+        if (isClimbing)
+        {
+            playerRB.velocity = new Vector2(0, velY);
+        }
+        else
+        {
+            playerRB.velocity = new Vector2(velX, playerRB.velocity.y);
+        }
+        
     }
 
     void HandleJump()
     {
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0)) && canJump)
         {
+            isClimbing = false;
             canJump = false;
             playerRB.velocity = new Vector3(playerRB.velocity.x, jumpPower);
             StartCoroutine(JumpCooldown());
@@ -78,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
     {
         canDash = false;
         isDashing = true; // Set dashing flag to true
-
+        isClimbing = false;
         // Trigger the dash particle effect
         if (dashParticlePrefab != null)
         {
@@ -118,6 +130,16 @@ public class PlayerMovement : MonoBehaviour
         // Wait for the cooldown before allowing another dash
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
+    }
+
+    public bool getClimbing()
+    {
+        return isClimbing;
+    }
+
+    public void setClimbing(bool val)
+    {
+        isClimbing = val;
     }
 
     IEnumerator JumpCooldown()
