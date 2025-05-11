@@ -7,30 +7,101 @@ public class Attack : MonoBehaviour
 {
     [SerializeField] GameObject hitbox;
     [SerializeField] GameObject hitParticle;
+    [SerializeField] GameObject attackIndicatorPrefab; // Prefab for the attack indicator
     [SerializeField] Animator animator; // Animator remains, but we won't use it
+    [SerializeField] private Rigidbody2D playerRB; // Reference to the player's Rigidbody2D
     [SerializeField] private bool attacking;
     [SerializeField] private float swingDelay;
+    [SerializeField] private float indicatorOrbitSpeed = 5f; // Speed of the attack indicator orbiting the player
+    [SerializeField] private float indicatorDistance = 3f; // Distance of the attack indicator from the player
 
-    // Update is called once per frame
+    private GameObject attackIndicator; // Instance of the attack indicator
+    private SpriteRenderer attackIndicatorSprite; // SpriteRenderer for the attack indicator
+    private Vector3 lastAttackDirection = Vector3.right; // Default direction (facing right)
+
+    void Start()
+    {
+        // Instantiate the attack indicator at the player's position + default direction
+        attackIndicator = Instantiate(attackIndicatorPrefab, transform.position + lastAttackDirection * indicatorDistance, Quaternion.identity);
+
+        // Get the SpriteRenderer component of the attack indicator
+        attackIndicatorSprite = attackIndicator.GetComponent<SpriteRenderer>();
+    }
+
     void Update()
     {
+        HandleAttackInput();
+        UpdateAttackIndicator();
+    }
+
+    void HandleAttackInput()
+    {
+        // Mouse input
         if (Input.GetMouseButtonDown(0) && attacking == false)
         {
             attacking = true;
-            // animator.SetBool("Attacking", attacking); // Disabled for debugging
-            StartCoroutine(Attacking());
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = 0f; // Ensure the z-coordinate is 0
+            StartCoroutine(Attacking(mousePosition));
         }
-        // animator.SetBool("Attacking", attacking); // Disabled for debugging
+
+        // Joystick input
+        float joystickX = Input.GetAxis("RightJoystickHorizontal"); // Right stick horizontal axis
+        float joystickY = -Input.GetAxis("RightJoystickVertical"); // Right stick vertical axis
+
+        if (math.abs(joystickX) > 0.1f || math.abs(joystickY) > 0.1f) // Deadzone check
+        {
+            Vector3 joystickInput = new Vector3(joystickX, joystickY, 0).normalized;
+
+            // Update the last valid attack direction
+            lastAttackDirection = joystickInput;
+
+            // Show the attack indicator sprite
+            if (!attackIndicatorSprite.enabled)
+            {
+                attackIndicatorSprite.enabled = true;
+            }
+        }
+        else
+        {
+            // Hide the attack indicator sprite if no joystick input is detected
+            if (attackIndicatorSprite.enabled)
+            {
+                attackIndicatorSprite.enabled = false;
+            }
+        }
+
+        // Attack when R1 is pressed
+        if (Input.GetKeyDown(KeyCode.JoystickButton5) && attacking == false) // R1 is JoystickButton5
+        {
+            attacking = true;
+            StartCoroutine(Attacking(attackIndicator.transform.position));
+        }
     }
 
-    IEnumerator Attacking()
+    void UpdateAttackIndicator()
     {
-        yield return new WaitForSeconds(0.3f);
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0f;
-        Vector3 dir = (mousePos - transform.position).normalized;
+        if (attackIndicator != null)
+        {
+            // Calculate the orbit position based on the player's position and the last attack direction
+            Vector3 orbitPosition = transform.position + lastAttackDirection * indicatorDistance;
+
+            // Add the player's velocity to make the indicator follow the player's speed
+            orbitPosition += (Vector3)playerRB.velocity * Time.deltaTime;
+
+            // Update the attack indicator's position
+            attackIndicator.transform.position = orbitPosition;
+        }
+    }
+
+    IEnumerator Attacking(Vector3 targetPosition)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        Vector3 dir = (targetPosition - transform.position).normalized;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        GameObject newObj = Instantiate(hitbox, transform.position + new Vector3(dir.x * 1, dir.y * 1), Quaternion.Euler(0, 0, angle));
+
+        GameObject newObj = Instantiate(hitbox, transform.position + dir, Quaternion.Euler(0, 0, angle));
         HitboxFollowCharacter followScript = newObj.GetComponent<HitboxFollowCharacter>();
         CollisionDetection colScript = newObj.GetComponent<CollisionDetection>();
         Animator hitboxAnimator = newObj.GetComponent<Animator>();

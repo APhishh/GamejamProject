@@ -1,0 +1,64 @@
+using UnityEngine;
+
+public class PlayerStats : MonoBehaviour
+{
+    [Header("Health Settings")]
+    [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float currentHealth;
+
+    [Header("Stamina Settings")]
+    [SerializeField] private float maxStamina = 100f;
+    [SerializeField] private float currentStamina;
+    [SerializeField] private float staminaRegenRate = 10f;
+    [SerializeField] private float dashStaminaCost = 25f;
+
+    [Header("Weapon")]
+    [SerializeField] private WeaponData currentWeapon;
+
+    private void Start()
+    {
+        currentHealth = maxHealth;
+        currentStamina = maxStamina;
+    }
+
+    private void Update()
+    {
+        RegenerateStamina();
+    }
+
+    private void RegenerateStamina()
+    {
+        if (currentStamina < maxStamina)
+        {
+            currentStamina += staminaRegenRate * Time.deltaTime;
+            currentStamina = Mathf.Min(currentStamina, maxStamina);
+        }
+    }
+
+    public bool UseStamina(float amount)
+    {
+        if (currentStamina >= amount)
+        {
+            currentStamina -= amount;
+            return true;
+        }
+        return false;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        currentHealth = Mathf.Max(currentHealth, 0);
+        
+        if (currentHealth <= 0)
+        {
+            // Handle player death
+            Debug.Log("Player died!");
+        }
+    }
+
+    // Getters for UI
+    public float GetHealthPercentage() => currentHealth / maxHealth;
+    public float GetStaminaPercentage() => currentStamina / maxStamina;
+    public WeaponData GetCurrentWeapon() => currentWeapon;
+}

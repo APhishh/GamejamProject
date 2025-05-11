@@ -303,7 +303,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: bb26109018ae55d438e8bdbb6955c45b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -442,6 +442,7 @@ GameObject:
   - component: {fileID: 708453974}
   - component: {fileID: 708453975}
   - component: {fileID: 708453976}
+  - component: {fileID: 708453977}
   m_Layer: 0
   m_Name: Player
   m_TagString: Hitable
@@ -465,7 +466,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: bb26109018ae55d438e8bdbb6955c45b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -594,6 +595,13 @@ MonoBehaviour:
   movementSpeed: 10
   jumpPower: 10
   jumpCooldown: 1
+  dashSpeed: 30
+  dashDistance: 10
+  dashCooldown: 1
+  dashParticlePrefab: {fileID: 3527863107731417733, guid: 09d4102113dfa29478e0340dfd339e9e, type: 3}
+  dashTrail: {fileID: 708453977}
+  animator: {fileID: 0}
+  SR: {fileID: 708453971}
 --- !u!114 &708453975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -606,7 +614,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43d4b7b3a71c301468e138a90f7a3f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitbox: {fileID: 2525822745882812696, guid: f73550d3dc9a68544b3759771787ec75, type: 3}
+  hitbox: {fileID: 1376615506310413272, guid: a2b0eacbb6aaf4f4f85e668ac14f7341, type: 3}
+  hitParticle: {fileID: 1376615506310413272, guid: a2b0eacbb6aaf4f4f85e668ac14f7341, type: 3}
+  attackIndicatorPrefab: {fileID: 1647200370959897356, guid: dd92f8a1d21d0a9458f402106a14d88d, type: 3}
+  animator: {fileID: 0}
+  playerRB: {fileID: 708453970}
+  attacking: 0
+  swingDelay: 0
+  indicatorOrbitSpeed: 5
+  indicatorDistance: 3
 --- !u!114 &708453976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -620,6 +636,110 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+--- !u!96 &708453977
+TrailRenderer:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708453969}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Time: 0.2
+  m_PreviewTimeScale: 1
+  m_Parameters:
+    serializedVersion: 3
+    widthMultiplier: 1
+    widthCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    colorGradient:
+      serializedVersion: 2
+      key0: {r: 1, g: 1, b: 1, a: 1}
+      key1: {r: 1, g: 1, b: 1, a: 1}
+      key2: {r: 0, g: 0, b: 0, a: 0}
+      key3: {r: 0, g: 0, b: 0, a: 0}
+      key4: {r: 0, g: 0, b: 0, a: 0}
+      key5: {r: 0, g: 0, b: 0, a: 0}
+      key6: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 65535
+      ctime2: 0
+      ctime3: 0
+      ctime4: 0
+      ctime5: 0
+      ctime6: 0
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 0
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_ColorSpace: -1
+      m_NumColorKeys: 2
+      m_NumAlphaKeys: 2
+    numCornerVertices: 0
+    numCapVertices: 0
+    alignment: 0
+    textureMode: 0
+    textureScale: {x: 1, y: 1}
+    shadowBias: 0.5
+    generateLightingData: 0
+  m_MinVertexDistance: 0.1
+  m_MaskInteraction: 0
+  m_Autodestruct: 0
+  m_Emitting: 1
+  m_ApplyActiveColorSpace: 1
 --- !u!1 &1530972447
 GameObject:
   m_ObjectHideFlags: 0
