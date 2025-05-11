@@ -14,6 +14,7 @@ public class EnemyFollowAI : MonoBehaviour
     [SerializeField] float attCooldown;
     [SerializeField] private bool canAttack = true;
     [SerializeField] private String Direction = "Left";
+
     // Update is called once per frame
     void Update()
     {

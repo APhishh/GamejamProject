@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+
 
 public class PlayerStats : MonoBehaviour
 {
@@ -49,11 +51,38 @@ public class PlayerStats : MonoBehaviour
     {
         currentHealth -= damage;
         currentHealth = Mathf.Max(currentHealth, 0);
-        
+
+        Debug.Log($"Player took {damage} damage. Current health: {currentHealth}");
+
         if (currentHealth <= 0)
         {
             // Handle player death
             Debug.Log("Player died!");
+            // Add death logic here (e.g., respawn, game over screen)
+        }
+    }
+
+    public void ApplyKnockback(Vector2 force, float duration)
+    {
+        StartCoroutine(KnockbackCoroutine(force, duration));
+    }
+
+    private IEnumerator KnockbackCoroutine(Vector2 force, float duration)
+    {
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            // Reset velocity before applying knockback
+            rb.velocity = Vector2.zero;
+
+            // Apply the knockback force
+            rb.AddForce(force, ForceMode2D.Impulse);
+
+            // Wait for the knockback duration
+            yield return new WaitForSeconds(duration);
+
+            // Reset the player's velocity
+            rb.velocity = Vector2.zero;
         }
     }
 
