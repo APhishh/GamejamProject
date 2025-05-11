@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
         // Also support D-pad input
         velX += Input.GetAxis("LeftJoystickHorizontal") * movementSpeed;
 
-        // animator.SetFloat("Speed", math.abs(playerRB.velocity.x)); // Disabled for debugging
+        animator.SetFloat("Speed", math.abs(playerRB.velocity.x)); // Disabled for debugging
 
         // Update sprite direction
         if (velX < 0)
@@ -68,8 +68,7 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleDash()
     {
-        if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.JoystickButton1))
-            && canDash && playerStats.UseStamina(25f)) // Check if enough stamina
+        if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.JoystickButton1))&& canDash && playerStats.UseStamina(25f)) // Check if enough stamina
         {
             StartCoroutine(Dash());
         }
