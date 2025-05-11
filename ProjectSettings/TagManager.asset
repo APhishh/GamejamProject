@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Hitable
+  - Ground
   layers:
   - Default
   - TransparentFX

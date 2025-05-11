@@ -14,13 +14,43 @@ public class EnemyFollowAI : MonoBehaviour
     [SerializeField] float attCooldown;
     [SerializeField] private bool canAttack = true;
     [SerializeField] private String Direction = "Left";
+    [SerializeField] private LayerMask groundLayer;
+     Ray ray;
+    RaycastHit2D hit;
+    
+  
 
     // Update is called once per frame
     void Update()
     {
-        if (player == null)
+
+        if(Direction == "Left")
         {
-            state = "Wander";
+            ray = new Ray(transform.position - new Vector3(1,0,0),Vector2.down*5);
+            enemyRB.velocity = new Vector2(-walkspeed, enemyRB.velocity.y);
+        }
+        else if(Direction == "Right")
+        {
+            ray = new Ray(transform.position + new Vector3(0.75f,0,0),Vector2.down*5);
+            enemyRB.velocity = new Vector2(walkspeed, enemyRB.velocity.y);
+        }
+
+        Debug.DrawRay(ray.origin, ray.direction * 5, Color.red);
+
+        hit = Physics2D.Raycast(ray.origin, ray.direction, 5f,groundLayer);
+
+        
+        if (hit.collider == null  || !hit.collider.CompareTag("Ground"))
+        {
+            Debug.Log("yea");
+            if(Direction == "Left")
+            {
+                Direction = "Right";
+            }
+            else if(Direction == "Right")
+            {
+                Direction = "Left";
+            }
         }
         else
         {
@@ -34,12 +64,17 @@ public class EnemyFollowAI : MonoBehaviour
         if (state == "Detected")
         {
             Vector3 dir = (player.position - transform.position).normalized;
-            enemyRB.velocity = new Vector2(dir.normalized.x * walkspeed, 0);
+            enemyRB.velocity = new Vector2(dir.normalized.x * walkspeed, enemyRB.velocity.y);
 
             if(Vector2.Distance(transform.position, player.position) <= 2 && canAttack)
             {
                 Attack();
             }
+
+        }
+
+        if (state == "Wander")
+        {
 
         }
 
