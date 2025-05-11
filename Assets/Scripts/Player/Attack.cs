@@ -30,6 +30,12 @@ public class Attack : MonoBehaviour
 
     void Update()
     {
+        // Check if inputs are allowed
+        if (!InputManager.Instance.CanProcessInput("PlayerAttack"))
+        {
+            return; // Skip all input handling if inputs are disabled
+        }
+
         HandleAttackInput();
         UpdateAttackIndicator();
     }
