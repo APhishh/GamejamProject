@@ -25,6 +25,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        // Check if inputs are allowed
+        if (!InputManager.Instance.CanProcessInput("PlayerMovement"))
+        {
+            return; // Skip all input handling if inputs are disabled
+        }
+
         if (!isDashing) // Skip movement and jump logic while dashing
         {
             HandleMovement();
@@ -68,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleDash()
     {
-        if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.JoystickButton1))&& canDash && playerStats.UseStamina(25f)) // Check if enough stamina
+        if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.JoystickButton1)) && canDash && playerStats.UseStamina(25f)) // Check if enough stamina
         {
             StartCoroutine(Dash());
         }
