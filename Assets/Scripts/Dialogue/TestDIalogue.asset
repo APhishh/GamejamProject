@@ -13,15 +13,20 @@ MonoBehaviour:
   m_Name: TestDIalogue
   m_EditorClassIdentifier: 
   lines:
-  - speakerName: "Miniboss-Burung"
-    text: "Berhenti di situ, makhluk rendahan. Pohon ini bukan tempatmu."
-  - speakerName: "Player"
-    text: "Aku nggak minta izinmu. Aku cuma minta keadilan buat semua yang di bawah."
-  - speakerName: "Miniboss-Burung"
-    text: "Hah! Keadilan? Di sini, cuma yang bersayap yang pantas melihat cahaya atas sana."
-  - speakerName: "Player"
-    text: "Sayap nggak nentuin siapa yang pantas hidup lebih baik. Aku bawa suara mereka semua."
-  - speakerName: "Miniboss-Burung"
-    text: "Suara mereka? Yang cuma tau merangkak di tanah? Kau akan jatuh seperti mereka!"
-  - speakerName: "Player"
-    text: "Kalau aku harus jatuh, setidaknya aku jatuh sambil melawan."
+  - speakerName: Miniboss-Burung
+    text: Berhenti di situ, makhluk rendahan. Pohon ini bukan tempatmu.
+  - speakerName: Player
+    text: Aku nggak minta izinmu. Aku cuma minta keadilan buat semua yang di bawah.
+  - speakerName: Miniboss-Burung
+    text: Hah! Keadilan? Di sini, cuma yang bersayap yang pantas melihat cahaya atas
+      sana.
+  - speakerName: Player
+    text: Sayap nggak nentuin siapa yang pantas hidup lebih baik. Aku bawa suara
+      mereka semua.
+  - speakerName: Miniboss-Burung
+    text: Suara mereka? Yang cuma tau merangkak di tanah? Kau akan jatuh seperti
+      mereka!
+  - speakerName: Player
+    text: Kalau aku harus jatuh, setidaknya aku jatuh sambil melawan.
+  - speakerName: Player
+    text: Kalau aku harus jatuh, setidaknya aku jatuh sambil melawan.

@@ -16,7 +16,7 @@ public class DialogueManager : MonoBehaviour
     private int currentLineIndex;
     private bool isDialogueActive = false;
     private bool canProcessInput = true;
-    private DialogueTrigger currentTrigger; // Cache the current trigger
+    private DialogueTrigger currentTrigger; // Cache the curr   ent trigger
 
     private void Awake()
     {
@@ -59,6 +59,9 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
+        // Temporarily disable input to prevent double input
+        canProcessInput = false;
+
         if (currentLineIndex >= currentDialogue.lines.Length - 1)
         {
             EndDialogue();
@@ -67,6 +70,9 @@ public class DialogueManager : MonoBehaviour
 
         currentLineIndex++;
         DisplayCurrentLine();
+
+        // Re-enable input after a short delay
+        Invoke(nameof(EnableInput), 0.2f); // Adjust delay duration as needed
     }
 
     private void DisplayCurrentLine()
@@ -101,7 +107,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (isDialogueActive && canProcessInput)
         {
-            if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Submit"))
+            if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton2))
             {
                 DisplayNextLine();
             }

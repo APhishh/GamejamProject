@@ -3,7 +3,7 @@ using UnityEngine;
 public class DialogueTrigger : MonoBehaviour
 {
     [SerializeField] private Dialogue dialogue;
-    [SerializeField] private float triggerRadius = 3f; // Radius within which the player can trigger dialogue
+    [SerializeField] private float triggerRadius = 1f; // Radius within which the player can trigger dialogue
     [SerializeField] private LayerMask playerLayer; // Layer for detecting the player
 
     private bool isPlayerInRange;
@@ -12,7 +12,7 @@ public class DialogueTrigger : MonoBehaviour
     private void Update()
     {
         // Check if the player is in range and presses the E key or Submit button
-        if (isPlayerInRange && (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Submit")))
+        if (isPlayerInRange && (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton2)))
         {
             if (!isDialogueActive)
             {
@@ -26,6 +26,8 @@ public class DialogueTrigger : MonoBehaviour
             }
         }
     }
+
+
 
     private void FixedUpdate()
     {
@@ -46,8 +48,15 @@ public class DialogueTrigger : MonoBehaviour
     public void EndDialogue()
     {
         Debug.Log("Dialogue ended!");
-        isDialogueActive = false; // Reset the dialogue active flag
+        isDialogueActive = true; // Temporarily keep it true to block immediate re-trigger
+        Invoke(nameof(ResetDialogueState), 0.2f); // Delay before allowing new dialogue
     }
+
+    private void ResetDialogueState()
+    {
+        isDialogueActive = false; // Allow dialogue to be triggered again
+    }
+
 
     private void OnDrawGizmosSelected()
     {
