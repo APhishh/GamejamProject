@@ -16,7 +16,7 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private Button backButton; // For credits panel
 
     [Header("Scene Settings")]
-    [SerializeField] private string gameSceneName = "GameScene"; // Your game scene name
+    [SerializeField] private string gameSceneName = "MainScene"; // Your game scene name
 
     private void Start()
     {

@@ -27,7 +27,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-       Debug.Log(animator.GetBool("Damaged"));
         if (!isDashing) // Skip movement and jump logic while dashing
         {
             HandleFalling();
@@ -40,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
     void HandleFalling()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1, groundLayer);
-        if(hit.collider != null)
+        if (hit.collider != null)
         {
             grounded = true;
             animator.SetBool("Grounded", true);
@@ -51,8 +50,16 @@ public class PlayerMovement : MonoBehaviour
             grounded = false;
         }
     }
+
     void HandleMovement()
     {
+        // Check if movement input is allowed
+        if (!InputManager.Instance.CanProcessInput("Horizontal") || !InputManager.Instance.CanProcessInput("Vertical"))
+        {
+            playerRB.velocity = new Vector2(0, playerRB.velocity.y); // Stop movement if input is disabled
+            return;
+        }
+
         // Get input from both keyboard and controller horizontal axis
         float velX = Input.GetAxis("Horizontal") * movementSpeed;
         float velY = Input.GetAxis("Vertical") * movementSpeed;
@@ -60,7 +67,6 @@ public class PlayerMovement : MonoBehaviour
         velX += Input.GetAxis("LeftJoystickHorizontal") * movementSpeed;
 
         animator.SetFloat("Speed", math.abs(playerRB.velocity.x)); // Disabled for debugging
-
 
         // Update sprite direction
         if (velX < 0)
@@ -80,11 +86,16 @@ public class PlayerMovement : MonoBehaviour
         {
             playerRB.velocity = new Vector2(velX, playerRB.velocity.y);
         }
-        
     }
 
     void HandleJump()
     {
+        // Check if jump input is allowed
+        if (!InputManager.Instance.CanProcessInput("Jump"))
+        {
+            return;
+        }
+
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0)) && canJump)
         {
             isClimbing = false;
@@ -96,15 +107,23 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleDash()
     {
+        // Check if dash input is allowed
+        if (!InputManager.Instance.CanProcessInput("Dash"))
+        {
+            return;
+        }
+
         if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.JoystickButton1)) && canDash && playerStats.UseStamina(25f)) // Check if enough stamina
         {
             StartCoroutine(Dash());
         }
     }
+
     public void setSpeed(float newspeed)
     {
         movementSpeed = newspeed;
     }
+
     IEnumerator Dash()
     {
         canDash = false;
