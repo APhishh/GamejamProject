@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-       
+       Debug.Log(animator.GetBool("Damaged"));
         if (!isDashing) // Skip movement and jump logic while dashing
         {
             HandleFalling();
@@ -159,6 +159,11 @@ public class PlayerMovement : MonoBehaviour
     public void setClimbing(bool val)
     {
         isClimbing = val;
+    }
+
+    public void SetJumpPower(float val)
+    {
+        jumpPower = val;
     }
 
     IEnumerator JumpCooldown()

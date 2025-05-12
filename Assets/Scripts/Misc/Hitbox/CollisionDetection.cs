@@ -37,7 +37,7 @@ public class CollisionDetection : MonoBehaviour
             if(collision.CompareTag("Player"))
             {
                  PlayerStats targetHealthSys = collision.GetComponent<PlayerStats>();
-                 targetHealthSys.TakeDamage(damage);
+                 targetHealthSys.TakeDamage(damage,attacker);
             }
             else if(collision.CompareTag("Enemy"))
             {
@@ -46,9 +46,9 @@ public class CollisionDetection : MonoBehaviour
             }
            
             Vector2 dir = (collision.transform.position - transform.position).normalized;
-            Debug.Log(dir);
             float Angle = Mathf.Atan2(dir.y,dir.x) * Mathf.Rad2Deg;
             Vector3 direction3D = new Vector3(transform.right.x, transform.right.y, 0f);
+            Debug.Log(direction3D);
             GameObject hitPart = Instantiate(hitParticle, collision.transform.position, Quaternion.LookRotation(direction3D, Vector3.back));
             Debug.DrawRay(hitPart.transform.position, hitPart.transform.right * 2, Color.red, 1f);
 
