@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 
 public class PlayerStats : MonoBehaviour
@@ -16,6 +17,10 @@ public class PlayerStats : MonoBehaviour
 
     [Header("Weapon")]
     [SerializeField] private WeaponData currentWeapon;
+    [SerializeField] private GameObject gameOverScreen;
+    [SerializeField] Animator animator;
+    [SerializeField] PlayerMovement PM;
+    
 
     private void Start()
     {
@@ -58,6 +63,13 @@ public class PlayerStats : MonoBehaviour
         {
             // Handle player death
             Debug.Log("Player died!");
+           // gameOverScreen.active = true;
+            gameObject.layer = LayerMask.NameToLayer("DeadPlayer");
+            animator.SetBool("Dead", true);
+            PM.setSpeed(0);
+            SpriteRenderer sr = GetComponent<SpriteRenderer>();
+            
+            StartCoroutine(FadeOut(sr,0.16f));
             // Add death logic here (e.g., respawn, game over screen)
         }
     }
@@ -85,6 +97,22 @@ public class PlayerStats : MonoBehaviour
             rb.velocity = Vector2.zero;
         }
     }
+
+    IEnumerator FadeOut(SpriteRenderer sr, float fadeSpeed)
+{
+    Color color = sr.color;
+
+    while (color.a > 0f)
+    {
+        color.a -= fadeSpeed * Time.deltaTime;
+        sr.color = color;
+        yield return null; 
+    }
+
+    color.a = 0f;
+    sr.color = color;
+    Destroy(gameObject);
+}
 
     // Getters for UI
     public float GetHealthPercentage() => currentHealth / maxHealth;

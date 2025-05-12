@@ -6,6 +6,11 @@ public class WatcherDetection : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Destroy(collision.gameObject);
+        if(collision.CompareTag("Player") )
+        {
+            PlayerStats PS = collision.GetComponent<PlayerStats>();
+            PS.TakeDamage(1000);
+        }
+        
     }
 }

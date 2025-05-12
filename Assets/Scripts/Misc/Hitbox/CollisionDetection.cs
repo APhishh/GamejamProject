@@ -28,15 +28,23 @@ public class CollisionDetection : MonoBehaviour
     public void setAttacker(GameObject attacker)
     {
         this.attacker = attacker;
-    }
+    } 
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Hitable") && collision.gameObject != attacker)
+        if((collision.CompareTag("Player") ||collision.CompareTag("Enemy")) && collision.gameObject != attacker)
         {
-            Debug.Log(collision);
-            HealthSys targetHealthSys = collision.GetComponent<HealthSys>();
-            targetHealthSys.Damage(damage);
+            if(collision.CompareTag("Player"))
+            {
+                 PlayerStats targetHealthSys = collision.GetComponent<PlayerStats>();
+                 targetHealthSys.TakeDamage(damage);
+            }
+            else if(collision.CompareTag("Enemy"))
+            {
+                HealthSys targetHealthSys = collision.GetComponent<HealthSys>();
+                targetHealthSys.Damage(damage);
+            }
+           
             Vector2 dir = (collision.transform.position - transform.position).normalized;
             Debug.Log(dir);
             float Angle = Mathf.Atan2(dir.y,dir.x) * Mathf.Rad2Deg;

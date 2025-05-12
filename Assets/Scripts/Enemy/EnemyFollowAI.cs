@@ -14,32 +14,71 @@ public class EnemyFollowAI : MonoBehaviour
     [SerializeField] float attCooldown;
     [SerializeField] private bool canAttack = true;
     [SerializeField] private String Direction = "Left";
+    [SerializeField] private LayerMask groundLayer;
+     Ray ray;
+    RaycastHit2D hit;
+    
+  
 
     // Update is called once per frame
     void Update()
     {
-        if (player == null)
+        if(Direction == "Left")
         {
-            state = "Wander";
+            ray = new Ray(transform.position - new Vector3(1,0,0),Vector2.down*5);
+            enemyRB.velocity = new Vector2(-walkspeed, enemyRB.velocity.y);
         }
-        else
+        else if(Direction == "Right")
         {
-             if (Vector2.Distance(transform.position, player.position) <= 6)
+            ray = new Ray(transform.position + new Vector3(0.75f,0,0),Vector2.down*5);
+            enemyRB.velocity = new Vector2(walkspeed, enemyRB.velocity.y);
+        }
+
+        Debug.DrawRay(ray.origin, ray.direction * 5, Color.red);
+
+        hit = Physics2D.Raycast(ray.origin, ray.direction, 5f,groundLayer);
+
+        
+        if (hit.collider == null  || !hit.collider.CompareTag("Ground"))
+        {
+            Debug.Log("yea");
+            if(Direction == "Left")
             {
-                state = "Detected";
+                Direction = "Right";
+            }
+            else if(Direction == "Right")
+            {
+                Direction = "Left";
             }
         }
        
+       if(player!=null && player.gameObject.layer != LayerMask.NameToLayer("DeadPlayer"))
+       {
+         if (Vector2.Distance(transform.position, player.position) <= 6)
+            {
+                state = "Detected";
+            }
+       }
+       else
+       {
+            state = "Wander";
+       }
+       
 
-        if (state == "Detected")
+        if (state == "Detected" && player != null && player.gameObject.layer != LayerMask.NameToLayer("DeadPlayer"))
         {
             Vector3 dir = (player.position - transform.position).normalized;
-            enemyRB.velocity = new Vector2(dir.normalized.x * walkspeed, 0);
+            enemyRB.velocity = new Vector2(dir.normalized.x * walkspeed, enemyRB.velocity.y);
 
             if(Vector2.Distance(transform.position, player.position) <= 2 && canAttack)
             {
                 Attack();
             }
+
+        }
+
+        if (state == "Wander")
+        {
 
         }
 
