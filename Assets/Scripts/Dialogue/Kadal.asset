@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 118b8588b714bd949b07dfa938df9328, type: 3}
+  m_Name: Kadal
+  m_EditorClassIdentifier: 
+  lines:
+  - speakerName: Kadal
+    text: "Hei, kau\u2026 jangan lanjut ke atas"
+  - speakerName: Squirrel
+    text: Kenapa? Apa yang kau takutkan?
+  - speakerName: Kadal
+    text: "Setiap makhluk yang mencoba\u2026 berakhir di paruh burung-burung itu."
+  - speakerName: Squirrel
+    text: Aku lebih takut hidup selamanya di bawah ketidakadilan ini.
+  - speakerName: Kadal
+    text: Kau pikir bisa ubah sistem pohon ini sendirian?
+  - speakerName: Squirrel
+    text: "Aku nggak tahu\u2026 tapi aku nggak mau diam kayak yang lain."
+  - speakerName: Kadal
+    text: "Kalau begitu\u2026 semoga kau lebih beruntung dari yang pernah mencoba"
+  - speakerName: Squirrel
+    text: Kau pernah mencoba, bukan? Apa yang kau temukan di atas sana?
+  - speakerName: Kadal
+    text: "Aku pernah\u2026 dan aku kehilangan segalanya. Teman-temanku, keluargaku\u2026
+      semua hilang."
+  - speakerName: Squirrel
+    text: Tapi kau masih di sini. Kenapa kau tidak mencoba lagi?
+  - speakerName: Kadal
+    text: "Karena aku tahu batasanku. Aku hanya seekor kadal kecil. Tapi kau\u2026
+      kau punya keberanian yang berbeda."
+  - speakerName: Squirrel
+    text: Keberanian saja tidak cukup. Aku butuh dukungan. Kau mau membantuku?
+  - speakerName: Kadal
+    text: Aku tidak bisa ikut denganmu, tapi aku akan memberimu nasihat. Jangan pernah
+      meremehkan kekuatan burung-burung itu. Mereka tidak hanya kuat, tapi juga licik.
+  - speakerName: Squirrel
+    text: Terima kasih. Aku akan ingat itu. Aku akan melangkah dengan hati-hati.
+  - speakerName: Kadal
+    text: Semoga kau berhasil. Jika kau berhasil, mungkin kau bisa mengubah nasib
+      kita semua.
