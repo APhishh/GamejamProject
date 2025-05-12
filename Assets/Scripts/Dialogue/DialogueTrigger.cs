@@ -25,8 +25,8 @@ public class DialogueTrigger : MonoBehaviour
         else
         {
             // Check if the player is in range and presses the E key or Submit button
-            if (isPlayerInRange && InputManager.Instance.CanProcessInput("E") && Input.GetKeyDown(KeyCode.E) ||
-                InputManager.Instance.CanProcessInput("Submit") && Input.GetKeyDown(KeyCode.JoystickButton2))
+            if (isPlayerInRange && InputManager.Instance.CanProcessInput("E") && InputManager.Instance.CanProcessInput("Submit")
+                && (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton2)))
             {
                 if (!isDialogueActive && !hasBeenTriggered)
                 {

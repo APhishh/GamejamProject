@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lines:
   - speakerName: Miniboss-Burung
-    text: Berhenti di situ, makhluk rendahan. Pohon ini bukan tempatmu.
+    text: Lol
   - speakerName: Player
     text: Aku nggak minta izinmu. Aku cuma minta keadilan buat semua yang di bawah.
   - speakerName: Miniboss-Burung

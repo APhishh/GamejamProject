@@ -9,7 +9,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D playerRB;
     [SerializeField] private float movementSpeed;
     [SerializeField] private float jumpPower;
-    [SerializeField] private float jumpCooldown;
     [SerializeField] private float dashSpeed = 20f; // Speed of the dash
     [SerializeField] private float dashDistance = 5f; // Distance of the dash
     [SerializeField] private float dashCooldown = 2f; // Cooldown for the dash
@@ -20,10 +19,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private SpriteRenderer SR;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private bool grounded;
-    private bool canJump = true;
+    [SerializeField] private bool canDoubleJump = true; // Flag to enable/disable double jump
+
     private bool canDash = true;
     private bool isDashing = false; // Flag to indicate if the player is currently dashing
     private bool isClimbing = false;
+    private bool hasDoubleJumped = false; // Tracks if the player has already double jumped
 
     void Update()
     {
@@ -42,6 +43,7 @@ public class PlayerMovement : MonoBehaviour
         if (hit.collider != null)
         {
             grounded = true;
+            hasDoubleJumped = false; // Reset double jump when grounded
             animator.SetBool("Grounded", true);
         }
         else
@@ -96,12 +98,22 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0)) && canJump)
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton0))
         {
-            isClimbing = false;
-            canJump = false;
-            playerRB.velocity = new Vector3(playerRB.velocity.x, jumpPower);
-            StartCoroutine(JumpCooldown());
+            if (grounded)
+            {
+                // Perform normal jump
+                isClimbing = false;
+                playerRB.velocity = new Vector3(playerRB.velocity.x, jumpPower);
+            }
+            else if (canDoubleJump && !hasDoubleJumped)
+            {
+                // Perform double jump
+                isClimbing = false;
+                playerRB.velocity = new Vector3(playerRB.velocity.x, jumpPower);
+                hasDoubleJumped = true; // Mark double jump as used
+                animator.SetTrigger("DoubleJump"); // Optional: Trigger double jump animation
+            }
         }
     }
 
@@ -183,12 +195,6 @@ public class PlayerMovement : MonoBehaviour
     public void SetJumpPower(float val)
     {
         jumpPower = val;
-    }
-
-    IEnumerator JumpCooldown()
-    {
-        yield return new WaitForSeconds(jumpCooldown);
-        canJump = true;
     }
 }
 

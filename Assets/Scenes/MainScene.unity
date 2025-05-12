@@ -3033,7 +3033,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerRB: {fileID: 708453970}
   movementSpeed: 10
-  jumpPower: 10
+  jumpPower: 15
   jumpCooldown: 1
   dashSpeed: 30
   dashDistance: 10
@@ -4556,7 +4556,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
-  triggerOnce: 0
+  triggerOnce: 1
   triggeredByRange: 0
 --- !u!1 &1336111963 stripped
 GameObject:
