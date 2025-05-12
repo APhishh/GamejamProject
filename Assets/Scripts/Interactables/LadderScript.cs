@@ -6,13 +6,14 @@ public class LadderScript : MonoBehaviour
 {
     [SerializeField]private GameObject player;
     [SerializeField]private float startPoint,endPoint;
-
+    [SerializeField]private GameObject firstLadder,lastLadder;
     
     void Start()
     {
-        Renderer renderer = GetComponent<Renderer>();
-        endPoint = renderer.bounds.max.y;
-        startPoint = renderer.bounds.min.y;
+        Renderer firstRenderer = firstLadder.GetComponent<Renderer>();
+        Renderer lastRenderer = lastLadder.GetComponent<Renderer>();
+        endPoint = lastRenderer.bounds.max.y;
+        startPoint = firstRenderer.bounds.min.y;
     }
     void OnTriggerEnter2D(Collider2D collision)
     {

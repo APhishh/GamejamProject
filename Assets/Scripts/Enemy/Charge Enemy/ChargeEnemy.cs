@@ -277,7 +277,7 @@ public class ChargeEnemy : MonoBehaviour
                 {
                     Debug.Log($"Applying knockback to Player! Direction: {knockbackDirection}, Force: {knockbackDirection * knockbackForce}");
                     playerStats.ApplyKnockback(knockbackDirection * knockbackForce, knockbackDuration);
-                    playerStats.TakeDamage(20f); // Deal 20 damage to the player
+                    playerStats.TakeDamage(20f,gameObject); // Deal 20 damage to the player
                 }
 
                 // Knockback the enemy
