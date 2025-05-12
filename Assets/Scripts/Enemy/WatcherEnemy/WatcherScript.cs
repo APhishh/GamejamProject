@@ -5,6 +5,7 @@ public class WatcherScript : MonoBehaviour
 {
     [SerializeField] private float rotateSpeed = 60f;
     [SerializeField] private float maxAngle = 90f;
+    [SerializeField] private Animator animator;
     private float currentAngle = 0f;
     private bool rotatingForward = true;
     private bool isDelaying = false;
@@ -16,6 +17,8 @@ public class WatcherScript : MonoBehaviour
         float delta = rotateSpeed * Time.deltaTime;
         if (rotatingForward)
         {
+            animator.SetBool("Down", false);
+            animator.SetBool("Up",true);
             currentAngle += delta;
             if (currentAngle >= maxAngle)
             {
@@ -26,6 +29,8 @@ public class WatcherScript : MonoBehaviour
         }
         else
         {
+            animator.SetBool("Down", true);
+            animator.SetBool("Up",false);
             currentAngle -= delta;
             if (currentAngle <= 0f)
             {
